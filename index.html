@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>プロセカ体力计算器</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', 'PingFang SC', Arial, sans-serif;
+      max-width: 900px;
+      margin: 40px auto;
+      padding: 20px;
+      /* background: linear-gradient(135deg, #fbc2eb 0%, #fcd6b6 100%); */
+      background: #fae3ba;
+      border-radius: 16px;
+      box-shadow: 0 0 16px rgba(252, 198, 182, 0.12);
+    }
+    .flex-container {
+      display: flex;
+      gap: 32px;
+      justify-content: space-between;
+      align-items: flex-start;
+    }
+    .box {
+      flex: 1;
+      background: rgba(255,255,255,0.85);
+      border: 1px solid #fbc2eb;
+      border-radius: 16px;
+      padding: 28px;
+      box-shadow: 0 4px 16px rgba(252, 198, 182, 0.08);
+      min-width: 320px;
+      transition: box-shadow 0.2s;
+    }
+    .box:hover {
+      box-shadow: 0 8px 24px rgba(252, 198, 182, 0.18);
+    }
+    h2 {
+      text-align: center;
+      color: #000000;
+      margin-bottom: 12px;
+    }
+    h3 {
+      color: #383631;
+      margin-bottom: 8px;
+    }
+    label {
+      color: #000000;
+      font-weight: 500;
+    }
+    input, select {
+      display: block;
+      width: 100%;
+      margin-top: 8px;
+      margin-bottom: 12px;
+      padding: 8px;
+      border-radius: 8px;
+      border: 1px solid #fcd6b6;
+      background: #fff7f0;
+      font-size: 1rem;
+      transition: border-color 0.2s;
+    }
+    input:focus, select:focus {
+      border-color: #fbbf24;
+      outline: none;
+    }
+    button {
+      margin-top: 16px;
+      width: 100%;
+      padding: 12px;
+      font-size: 1rem;
+      background: linear-gradient(90deg, #8e03a0 0%, #fcd6b6 100%);
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: bold;
+      box-shadow: 0 2px 8px rgba(252, 198, 182, 0.08);
+      transition: background 0.2s;
+    }
+    button:hover {
+      background: linear-gradient(90deg, #fcd6b6 0%, #fbc2eb 100%);
+    }
+    #output4, #myResourceOutput {
+      margin-top: 20px;
+      text-align: center;
+      font-weight: bold;
+      font-size: 1.2rem;
+      color: #f59e42;
+    }
+  </style>
+</head>
+<body>
+  <div class="flex-container">
+    <div class="box">
+      <h2>PRSK 体力转换</h2>
+      <label for="each1">当前单场pt:</label>
+      <input type="number" id="each1" placeholder="e.g. 35000" />
+
+      <label for="curlivebo">当前体力/火:</label>
+      <select id="curlivebo">
+        <option value="">-- Select --</option>
+        <option value="0">0</option>
+        <option value="1">1</option><option value="2">2</option><option value="3">3</option>
+        <option value="4">4</option><option value="5">5</option><option value="6">6</option>
+        <option value="7">7</option><option value="8">8</option><option value="9">9</option>
+        <option value="10">10</option>
+      </select>
+
+      <label for="livebo">换算为多少体力:</label>
+      <select id="livebo">
+        <option value="">-- Select --</option>
+        <option value="1">1</option><option value="2">2</option><option value="3">3</option>
+        <option value="4">4</option><option value="5">5</option><option value="6">6</option>
+        <option value="7">7</option><option value="8">8</option><option value="9">9</option>
+        <option value="10">10</option>
+      </select>
+
+      <button onclick="calculateTargetScore()">换算</button>
+      <div id="output4"></div>
+    </div>
+    <div class="box">
+      <h2>资源与目标分数计算</h2>
+      <div style="border:1px solid #eee; border-radius:8px; padding:16px; margin-bottom:16px;">
+        <h3>我有：</h3>
+        <label for="myAvgScore">场均pt:</label>
+        <input type="number" id="myAvgScore" placeholder="e.g. 64000" />
+
+        <label for="currentScore">当前pt:</label>
+        <input type="number" id="currentScore" placeholder="e.g. 0" />
+
+        <label for="myDiamonds">钻石数量:</label>
+        <input type="number" id="myDiamonds" placeholder="e.g. 100000" />
+
+        <label for="mySmallDrink">小火罐:</label>
+        <input type="number" id="mySmallDrink" placeholder="e.g. 100" />
+
+        <label for="myLargeDrink">大火罐:</label>
+        <input type="number" id="myLargeDrink" placeholder="e.g. 100" />
+      </div>
+
+      <div style="border:1px solid #eee; border-radius:8px; padding:16px;">
+        <h3>我要：</h3>
+        <label for="resourceLivebo2">消耗体力/几火:</label>
+        <select id="resourceLivebo2">
+          <option value="">-- Select --</option>
+          <option value="1">1</option><option value="2">2</option><option value="3">3</option>
+          <option value="4">4</option><option value="5">5</option><option value="6">6</option>
+          <option value="7">7</option><option value="8">8</option><option value="9">9</option>
+          <option value="10">10</option>
+        </select>
+        <label for="myTargetScore">目标分数（可不填）:</label>
+        <input type="number" id="myTargetScore" placeholder="e.g. 1000000" />
+      </div>
+
+      <button onclick="calculatePoints()">计算</button>
+      <div id="myResourceOutput" style="margin-top:20px;"></div>
+    </div>
+  </div>
+  <script>
+    const bonusMap = {
+      0: 1,
+      1: 5,
+      2: 10,
+      3: 15,
+      4: 20,
+      5: 25,
+      6: 27,
+      7: 29,
+      8: 31,
+      9: 33,
+      10: 35
+    };
+
+    function calculateTargetScore() {
+      const each1 = parseFloat(document.getElementById("each1").value);
+      const curlivebo = parseInt(document.getElementById("curlivebo").value);
+      const livebo = parseInt(document.getElementById("livebo").value);
+
+      if (isNaN(each1) || !bonusMap[curlivebo] || !bonusMap[livebo]) {
+        document.getElementById("output4").innerText = "请输入有效的输入";
+        return;
+      }
+
+      const x = bonusMap[curlivebo];
+      const y = bonusMap[livebo];
+      const targetScore = each1 /x * y;
+
+      document.getElementById("output4").innerText = `换算后pt: ${Math.round(targetScore)}`;
+    }
+
+    // function calculateResources() {
+    //   const singleScore = parseFloat(document.getElementById("singleScore").value); // 当前场均pt
+    //   const currentScore = parseFloat(document.getElementById("currentScore").value); // 当前pt
+    //   const targetScore = parseFloat(document.getElementById("targetScore").value); // 目标pt
+    //   const resourceLivebo = parseInt(document.getElementById("resourceLivebo").value); // 消耗体力/几火
+
+    //   if (
+    //     isNaN(singleScore) ||
+    //     isNaN(currentScore) ||
+    //     isNaN(targetScore) ||
+    //     isNaN(resourceLivebo)
+    //   ) {
+    //     document.getElementById("outputResources").innerText = "请输入所有有效数值。";
+    //     return;
+    //   }
+
+    //   const needPt = targetScore - currentScore;
+    //   if (needPt <= 0) {
+    //     document.getElementById("outputResources").innerText = "目标pt需大于当前pt。";
+    //     return;
+    //   }
+
+    //   const rounds = Math.ceil(needPt / singleScore);
+    //   const diamondPerRound = resourceLivebo * 10;
+    //   const totalDiamond = rounds * diamondPerRound;
+    //   const bonusdrink = Math.ceil(totalDiamond / 10);
+
+    //   document.getElementById("outputResources").innerText =
+    //     `需周回 ${rounds} 场，每回消耗 ${diamondPerRound} 钻石，总共需要 ${totalDiamond} 钻石 = ${bonusdrink}火/体力`;
+    // }
+
+    function calculatePoints() {
+      const myAvgScore = parseFloat(document.getElementById("myAvgScore").value);
+      const smallDrink = parseInt(document.getElementById("mySmallDrink").value) || 0;
+      const largeDrink = parseInt(document.getElementById("myLargeDrink").value) || 0;
+      const diamonds = parseInt(document.getElementById("myDiamonds").value) || 0;
+      const resourceLivebo2 = parseInt(document.getElementById("resourceLivebo2").value);
+      const myTargetScore = parseFloat(document.getElementById("myTargetScore").value);
+      const myCurrentScore = parseFloat(document.getElementById("currentScore").value);
+
+      if (
+        isNaN(myAvgScore) ||
+        isNaN(resourceLivebo2) ||
+        resourceLivebo2 <= 0
+      ) {
+        document.getElementById("myResourceOutput").innerText = "请输入有效的场均pt和体力消耗。";
+        return;
+      }
+
+      // 计算总体力
+      const totalStamina = smallDrink + largeDrink * 10 + Math.floor(diamonds / 10);
+      const rounds = Math.floor(totalStamina / resourceLivebo2);
+      const remainStamina = totalStamina % resourceLivebo2;
+      const totalPoints = rounds * myAvgScore;
+
+      let result = `你的资源还可以周回 ${rounds} 场，能获得 ${totalPoints} pt，剩余体力 ${remainStamina}。`;
+
+      // 如果填写了当前pt和目标pt，额外做一次calculateResources的计算
+      if (!isNaN(myCurrentScore) && !isNaN(myTargetScore) && myTargetScore > myCurrentScore) {
+        const needPt = myTargetScore - myCurrentScore;
+        const needRounds = Math.ceil(needPt / myAvgScore);
+        const diamondPerRound = resourceLivebo2 * 10;
+        const totalDiamond = needRounds * diamondPerRound;
+        const bonusdrink = Math.ceil(totalDiamond / 10);
+
+        result += `\n\n距离目标还需 ${needRounds} 场，总共需要 ${totalDiamond} 钻石 ≈ ${bonusdrink} 体力/火。`;
+      }
+
+      document.getElementById("myResourceOutput").innerText = result;
+    }
+  </script>
+</body>
+</html>
