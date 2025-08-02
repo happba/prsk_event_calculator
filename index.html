@@ -166,9 +166,9 @@
   <div class = "info-banner">
     <div>
       <span class="info-text">
-        本🔧用于计算prsk体力和资源的消耗，可用于冲榜规划。<br>
+        本🔧用于计算prsk体力和资源的消耗，可用于冲榜规划。<br><br>
         说明：<br>
-        1. 如不知道每把多少分，请先使用日本人写的<a target="_blank" rel="noopener noreferrer" class="external-link" href="https://keisan.casio.jp/exec/user/1745298080" >0火虾Pt计算器</a>估算自己的场均pt。<br>
+        1. 如不知道每把多少分，请先使用@Tomo2240写的<a target="_blank" rel="noopener noreferrer" class="external-link" href="https://keisan.casio.jp/exec/user/1745298080" >イベントポイント計算機</a>估算自己的场均pt。<br>
         2. PRSK体力转换：换算不同体力下的场均分数。E.g. 将5火pt换算成7火pt。<br>
         3. 资源与目标分数计算：根据现有的资源（和目标）计算需要周回的场数和可获得的pt。<br>
         4. 如果填写了目标分数，还会计算达到目标所需的钻石和体力/火。<br>
@@ -207,7 +207,8 @@
           <input type="number" id="myLargeDrink" placeholder="e.g. 100" />
 
           <label for="roundsPerHour">一小时周回数:</label>
-          <input type="number" id="roundsPerHour" placeholder="e.g. 31" />
+          <span style="color: gray; font-size: 0.9em;">（默认为虾29周回）</span>
+          <input type="number" id="roundsPerHour" placeholder="e.g. 29" />
         </div>
         <div class="resource-section">
           <h3>我要：</h3>
@@ -278,36 +279,7 @@
       document.getElementById("output4").innerText = `换算后pt: ${Math.round(targetScore)}`;
     }
 
-    // function calculateResources() {
-    //   const singleScore = parseFloat(document.getElementById("singleScore").value); // 当前场均pt
-    //   const currentScore = parseFloat(document.getElementById("currentScore").value); // 当前pt
-    //   const targetScore = parseFloat(document.getElementById("targetScore").value); // 目标pt
-    //   const resourceLivebo = parseInt(document.getElementById("resourceLivebo").value); // 消耗体力/几火
 
-    //   if (
-    //     isNaN(singleScore) ||
-    //     isNaN(currentScore) ||
-    //     isNaN(targetScore) ||
-    //     isNaN(resourceLivebo)
-    //   ) {
-    //     document.getElementById("outputResources").innerText = "请输入所有有效数值。";
-    //     return;
-    //   }
-
-    //   const needPt = targetScore - currentScore;
-    //   if (needPt <= 0) {
-    //     document.getElementById("outputResources").innerText = "目标pt需大于当前pt。";
-    //     return;
-    //   }
-
-    //   const rounds = Math.ceil(needPt / singleScore);
-    //   const diamondPerRound = resourceLivebo * 10;
-    //   const totalDiamond = rounds * diamondPerRound;
-    //   const bonusdrink = Math.ceil(totalDiamond / 10);
-
-    //   document.getElementById("outputResources").innerText =
-    //     `需周回 ${rounds} 场，每回消耗 ${diamondPerRound} 钻石，总共需要 ${totalDiamond} 钻石 = ${bonusdrink}火/体力`;
-    // }
 
     function calculatePoints() {
       const myAvgScore = parseFloat(document.getElementById("myAvgScore").value);
