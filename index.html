@@ -305,13 +305,14 @@
       const rounds = Math.floor(totalStamina / resourceLivebo2);
       const remainStamina = totalStamina % resourceLivebo2;
       const totalPoints = rounds * myAvgScore;
+      const overallScore = myCurrentScore + totalPoints;
 
-      let result = `你的资源还可以周回 ${rounds} 场，能获得 ${totalPoints} pt，剩余体力 ${remainStamina}。`;
+      let result = `你的资源还可以周回 ${rounds} 场，获得 ${totalPoints} pt，总共${overallScore}，剩余体力 ${remainStamina}。`;
 
       // 计算需要小时
       if (roundsPerHour && roundsPerHour > 0) {
         const hours = (rounds / roundsPerHour).toFixed(2);
-        result += `\n预计需要 ${hours} 小时完成这些周回。`;
+        result += `\n预计需要 ${hours} 小时打完。`;
       }
 
       // 如果填写了当前pt和目标pt，额外做一次calculateResources的计算
@@ -322,7 +323,7 @@
         const totalDiamond = needRounds * diamondPerRound;
         const bonusdrink = Math.ceil(totalDiamond / 10);
 
-        result += `\n\n距离目标还差${needPt}pt，需周回 ${needRounds} 场，总共需要 ${totalDiamond} 钻石 ≈ ${bonusdrink} 体力/火。`;
+        result += `\n\n距离目标还差${needPt}pt，需周回 ${needRounds} 场，需钻石${totalDiamond}  ≈ ${bonusdrink} 体力/火。`;
 
         if (roundsPerHour && roundsPerHour > 0) {
           const needHours = (needRounds / roundsPerHour).toFixed(2);
